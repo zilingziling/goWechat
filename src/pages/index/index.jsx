@@ -3,19 +3,19 @@ import { View, Button, Text,Image,Input } from "@tarojs/components";
 import { AtMessage,AtInput } from "taro-ui";
 import "./index.scss";
 import api from "../../service/api";
+import Goods from '../../components/goods'
 class Index extends Component {
   config = {
     navigationBarTitleText: "GO球鞋仓库"
   };
   state = {
-
+    data:[1,2,3,4,5]
   };
   componentDidMount() {
 
   }
-
-
   render() {
+    const {data} =this.state
     return (
       <View className="indexContent">
         <AtMessage />
@@ -65,6 +65,9 @@ class Index extends Component {
           <View className='btn clicked'>求货</View>
           <View className='btn'>出货</View>
         </View>
+        {
+          data.map(item=><Goods/>)
+        }
       </View>
     );
   }
