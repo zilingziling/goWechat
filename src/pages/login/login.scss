@@ -1,0 +1,37 @@
+@import "~taro-ui/dist/style/components/input.scss";
+.loginWrap{
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+  padding: 24px 32px;
+  .h1{
+    font-size: 48px;
+    color: rgba(0,0,0,.85);
+    margin-bottom: 24px;
+  }
+  .loginForm{
+    background: #FFFFFF;
+    width: 686px;
+    height: 182px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0,0,0,.2);
+    margin:0 auto 120px;
+    .ask{
+      width: 40px;
+      height: 40px;
+    }
+  }
+  .confirm{
+    width: 686px;
+    height: 98px;
+    margin: auto;
+    border-radius: 16px;
+    background: #FECE35;
+    font-size: 36px;
+    color: rgba(0,0,0,.85);
+    text-align: center;
+    line-height: 98px;
+  }
+}

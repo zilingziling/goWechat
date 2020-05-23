@@ -1,0 +1,91 @@
+.outGoods{
+  width: 684px;
+  min-height: 130px;
+  box-sizing: border-box;
+  padding: 24px 32px;
+  border-radius: 16px;
+  background: #FFFFFF;
+  margin: 16px auto 0;
+  border: 2px solid transparent;
+  .normal{
+    display: flex;
+    justify-content: flex-start;
+  }
+  .head{
+    width: 80px;
+    height: 80px;
+    margin-right: 84px;
+  }
+  .grid{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .vertical{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    .text{
+      font-size: 24px;
+      color: #000000;
+      margin-bottom: 10px;
+    }
+    .grey{
+      font-size: 24px;
+      color: rgba(0,0,0,.55);
+    }
+    .icon{
+      width: 32px;
+      height: 32px;
+      margin-bottom: 10px;
+    }
+  }
+  .vip{
+    .and{
+      width: 634px;
+      margin: auto;
+      padding: 20px 0;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .divide{
+        width: 252px;
+        height: 1px;
+        background:  rgba(0,0,0,.1);
+      }
+      .andCenter{
+        font-size: 20px;
+        color: rgba(0,0,0,.34);
+      }
+    }
+    .vipLogo{
+      width: 216px;
+      height: 36px;
+      margin: 0 auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .logo1{
+        width: 32px;
+        height: 32px;
+      }
+      .logo2{
+        width: 24px;
+        height: 24px;
+      }
+      .logo3{
+        width: 24px;
+        height: 27px;
+      }
+      .logo4{
+        width: 96px;
+        height: 28px;
+      }
+    }
+  }
+
+}
+.clicked{
+  border-color:  #FECE35;
+}

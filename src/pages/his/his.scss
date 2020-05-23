@@ -1,0 +1,61 @@
+.hisWrap{
+  padding: 0 32px 16px;
+  box-sizing: border-box;
+  width: 100vw;
+  min-height: 100vh;
+  .hisInfo{
+    box-sizing: border-box;
+    padding-top: 178px;
+    width: 100%;
+    height: 282px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: url("../../assets/images/font@2x.png") top/cover no-repeat;
+    .info{
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      .head{
+        width: 112px;
+        height: 112px;
+        margin-right: 24px;
+      }
+      .shop{
+        display: flex;
+        flex-direction: column;
+        .name{
+          font-size: 36px;
+          color: rgba(0,0,0,.85);
+          margin-bottom: 12px;
+
+        }
+        .shopType{
+          font-size: 24px;
+          color: rgba(0,0,0,.55);
+        }
+      }
+    }
+    .logo{
+      width: 78px;
+      height: 88px;
+    }
+  }
+  .count{
+    width: 360px;
+    height: 74px;
+    margin: 44px auto 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .divide{
+      height: 2px;
+      background: rgba(0,0,0,.15);
+      width: 40px;
+    }
+    .nums{
+      font-size: 24px;
+      color: #000000;
+    }
+  }
+}
