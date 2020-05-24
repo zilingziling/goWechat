@@ -2,7 +2,7 @@ import Taro from "@tarojs/taro";
 import { HTTP_STATUS } from "../utils/status";
 import { base } from "./config";
 import { logError } from "../utils/error";
-let token=''
+let token='token'
 export default {
   baseOptions(params, method = "GET") {
     let { url, data } = params;

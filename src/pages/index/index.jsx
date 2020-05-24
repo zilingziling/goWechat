@@ -9,21 +9,74 @@ class Index extends Component {
     navigationBarTitleText: "GO球鞋仓库"
   };
   state = {
-    data:[1,2,3,4,5],
-    showSearch:false
+    data:[],
+    showSearch:false,
+    type:1,
+    pageIndex:1,
+    countInfo:{},
+
   };
   componentDidMount() {
     this.init()
-  }
-   init=()=>{
-    api.get('/v2/supplyDemand/getOutPutSupplyDemand',{pageIndex:1,pageSize:10}).then(r=>{
-      console.log(r)
+  //   获取统计信息
+    api.get('/v2/h5/getStatisticsCountHall').then(r=>{
+      if(r.data.code===0){
+        this.setState({
+          countInfo: r.data.data
+        })
+      }
     })
   }
+   init=()=>{
+    const {type,pageIndex}=this.state
+    api.get('/v2/h5/supplyDemandHall',{pageIndex,pageSize:10,type}).then(r=>{
+      if(r.data.code===0){
+        this.setState({
+          data:[...this.state.data,...r.data.data.list]
+        })
+      }
+    })
+  }
+  chooseType=type=>{
+    this.setState({
+      type,
+      pageIndex:1,
+      data:[]
+    },()=>{
+      this.init()
+
+    })
+
+  }
+  onReachBottom(){
+    this.setState({
+        pageIndex:++this.state.pageIndex
+    },()=>{
+      this.init()
+    })
+  }
+  // 搜索
+  onClickSearch=()=>{
+    this.setState({
+      showSearch:true,
+      data:[],
+      pageIndex:1,
+      type:0
+    })
+  }
+  onCloseSearch=()=>{
+    this.setState({
+      showSearch:false,
+      data:[],
+      pageIndex:1,
+      type:1
+    })
+  }
+
   render() {
-    const {data,showSearch} =this.state
+    const {data,showSearch,countInfo} =this.state
     return (
-      <View className="indexContent" style={showSearch?{height:'100vh',overflow:'hidden'}:null}>
+      <View  className="indexContent" style={showSearch?{height:'100vh',overflow:'hidden'}:null}>
         <AtMessage />
         {
           showSearch&&<View className='modalStyle'>
@@ -33,12 +86,13 @@ class Index extends Component {
                   <Text className='select selected'>求货</Text>
                   <Text className='select'>出货</Text>
                 </View>
-                <Image onClick={()=>this.setState({showSearch:false})} className='close' src={require('../../assets/images/delete@2x.png')}/>
+                <Image onClick={this.onCloseSearch} className='close' src={require('../../assets/images/delete@2x.png')}/>
               </View>
               <View className='search'>
                 <Image src={require('../../assets/images/search.png')} className='searchIcon'/>
                 {/*<Input placeholderClass='placeHolder' clear={true} placeholder='输入货号或名字'/>*/}
                 <AtInput
+
                   className='input'
                   clear
                   placeholderClass='placeHolder'
@@ -48,7 +102,8 @@ class Index extends Component {
               </View>
               <View className='listWrapper'>
                 {
-                  data.map(item=><Goods/>)
+                  data.map(goods=>{
+                  })
                 }
               </View>
             </View>
@@ -64,31 +119,32 @@ class Index extends Component {
         <View className='counts'>
           <View className='aData'>
             <View className='total'>
-              <Text className='bold'>100,00</Text>
+              <Text className='bold'>{countInfo.totalCount}</Text>
               <Text className='normal'>件</Text>
             </View>
             <Text className='explain'>累计交易次数达到</Text>
           </View>
           <View className='aData'>
             <View className='total'>
-              <Text className='bold'>100,00</Text>
+              <Text className='bold'>{countInfo.myDemandNum}</Text>
               <Text className='normal'>件</Text>
             </View>
             <Text className='explain'>求货总数</Text>
           </View>
           <View className='aData'>
             <View className='total'>
-              <Text className='bold'>100,00</Text>
+              <Text className='bold'>{countInfo.mySupplyNum}</Text>
               <Text className='normal'>件</Text>
             </View>
             <Text className='explain'>出货总数</Text>
           </View>
 
         </View>
-        <View className='search'>
+        <View className='search' onClick={this.onClickSearch}>
           <Image src={require('../../assets/images/search.png')} className='searchIcon'/>
           {/*<Input placeholderClass='placeHolder' clear={true} placeholder='输入货号或名字'/>*/}
           <AtInput
+            disabled
             className='input'
             clear
             placeholderClass='placeHolder'
@@ -97,11 +153,11 @@ class Index extends Component {
           />
         </View>
         <View className='type'>
-          <View className='btn clicked'>求货</View>
-          <View className='btn'>出货</View>
+          <View className={`btn ${this.state.type===0?'clicked':''}`} onClick={()=>this.chooseType(0)}>求货</View>
+          <View className={`btn ${this.state.type===1?'clicked':''}`} onClick={()=>this.chooseType(1)}>出货</View>
         </View>
         {
-          data.map(item=><Goods/>)
+          data.map(item=><Goods goodsInfo={{...item,type:this.state.type}} key={item.id}/>)
         }
       </View>
     );

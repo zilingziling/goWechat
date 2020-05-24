@@ -28,13 +28,14 @@
     .num{
       opacity: 0.55;
 
-      font-weight: regular;
+      font-weight: normal;
       font-size: 24px;
       margin-bottom: 10px;
     }
     .size{
-      display: grid;
-      grid-template-columns: repeat(6,1fr);
+      display: flex;
+      //grid-template-columns: repeat(6,minmax(66px,1fr));
+      //grid-column-gap: 16px;
 
     }
   }
