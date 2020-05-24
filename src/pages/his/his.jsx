@@ -67,22 +67,22 @@ class His extends Component {
       <View className='hisWrap'>
         <View className='hisInfo'>
           <View className='info'>
-            <Image  className='head' src={img}/>
-            <View className='shop'>
               <Text className='name'>{userName}</Text>
-              <Text className='shopType'>仓库类型 · {accountState==="mainAccount"?'主仓库':"子仓库"}</Text>
-            </View>
+              <Text className='shopType'>{type===1?'出':"求"}货数量  {total} 个商品</Text>
           </View>
-          <Image className='logo' src={require('../../assets/images/certification_big@2x.png')}/>
+          <Image className='logo' src={img}/>
         </View>
-        <View className='count'>
-          <View className='divide'></View>
-          <Text className='nums'>{type===1?'出':"求"}货数量 - {total}/双</Text>
-          <View className='divide'></View>
+        {/*<View className='count'>*/}
+        {/*  <View className='divide'></View>*/}
+        {/*  <Text className='nums'>{type===1?'出':"求"}货数量 - {total}/双</Text>*/}
+        {/*  <View className='divide'></View>*/}
+        {/*</View>*/}
+        <View className='scroll'>
+          {
+            data.map(item=><Goods goodsInfo={item} fromHis={true}/>)
+          }
         </View>
-        {
-          data.map(item=><Goods goodsInfo={item} fromHis={true}/>)
-        }
+
       </View>
     );
   }

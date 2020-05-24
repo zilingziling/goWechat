@@ -3,6 +3,7 @@
   width: 100vw;
   height: 100vh;
   position: relative;
+  min-height: 100vh;
   .goods{
     height: 208px;
     background: #FFFFFF;
@@ -33,9 +34,10 @@
 
   }
   .out{
-    max-height: calc(100% - 340px);
+    //max-height: calc(100% - 340px);
     overflow-y: auto;
-
+    height:calc(100vh - 240px) ;
+    min-height:calc(100vh - 240px) ;
   }
   .contact{
     position: absolute;

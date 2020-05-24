@@ -69,30 +69,38 @@ class OutList extends Component {
     const {clickedId}=this.state
     if(clickedId){
       // 验证是否登录过
-      wx.login({
-        success (res) {
-          if (res.code) {
-            console.log(res.code)
-            //发起网络请求
-            // api.get('/v2/h5/getInfoByPhoneNum',{code:res.code}).then(r=>{
-            //     console.log(r)
-            // })
-          } else {
+      let token =wx.getStorageSync('token');
+      if(token){
+        wx.setClipboardData({
+          data: clickedId,
+          success: function (res) {
+            wx.getClipboardData({
+              success: function (res) {
+                wx.showToast({
+                  title: '已复制微信'
+                })
+              }
+            })
           }
-        }
-      })
-      // wx.setClipboardData({
-      //   data: clickedId,
-      //   success: function (res) {
-      //     wx.getClipboardData({
-      //       success: function (res) {
-      //         wx.showToast({
-      //           title: '已复制微信'
-      //         })
-      //       }
-      //     })
-      //   }
-      // })
+        })
+      }else {
+        // token 不存在
+        wx.login({
+          success (res) {
+            if (res.code) {
+              //发起网络请求
+                api.get('/v2/h5/getInfoByPhoneNum',{code:res.code}).then(r=>{
+                  if(r.data.code===0){
+                    wx.setStorageSync('userInfo', r.data.data);
+                    Taro.navigateTo({
+                      url:'/pages/login/login'
+                    })
+                }
+              })
+            }
+          }
+        })
+      }
     }else {
       wx.showToast({
         title: '请先选择！',
