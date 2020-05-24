@@ -1,0 +1,38 @@
+.bigSize{
+  border-radius: 8px;
+  border: 2px solid rgba(0,0,0,.15);
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  width: 108px;
+  height: 128px;
+  margin-bottom: 36px;
+  .size{
+    font-weight: bold;
+    font-size: 32px;
+    color: #000000;
+    margin-bottom: 8px;
+  }
+  .person{
+    font-size: 24px;
+    color: rgba(0,0,0,.95);
+  }
+}
+.clicked{
+  background: rgba(0,0,0,.85);
+  border-color: transparent;
+  .size,.person{
+    color: #ffffff;
+  }
+}
+.normal{
+  background: none;
+  border-color: rgba(0,0,0,.15);
+  .size{
+    color: #000000;
+  }
+  .person{
+    color: rgba(0,0,0,.95);
+  }
+}

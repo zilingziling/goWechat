@@ -4,21 +4,34 @@ import { View, Button, Text,Image,Input  } from "@tarojs/components";
 import './outGoods.scss'
 class OutGoods extends Component{
   static defaultProps = {
-    data: {},
+    data: {
+      createTime:'',
+      userImg:'',
+      userId:''
+    },
+  }
+  toHis=()=>{
+    const {data}=this.props
+    Taro.navigateTo({
+      url:`/pages/his/his?userId=${data.userId}&&type=${data.choosedType}&&img=${data.userImg}&&userName=${data.userName}&&accountState=${data.accountState}`
+    })
   }
   render(){
     const {data}=this.props
     return (
-      <View className='outGoods '>
+      <View className={`outGoods ${data.checked?'clicked':''}`} onClick={()=>this.props.onClick(data.userId,data.wxNum)}>
         <View className='normal'>
-          <Image className='head'/>
+          <Image className='head' src={data.userImg} onClick={this.toHis}/>
+          {
+            data.isVip===1&&<Image className='littleIcon' src={require('../../assets/images/vip@2x.png')}/>
+          }
           <View className='grid'>
             <View className='vertical'>
               <Text className='text'>{data.size}</Text>
               <Text className='grey'>尺码</Text>
             </View>
             <View className='vertical'>
-              <Text className='text'>{data.createTime}</Text>
+              <Text className='text'>{data.createTime.split(' ')[0].split('-')[1]+'-'+data.createTime.split(' ')[0].split('-')[2]}</Text>
               <Text className='grey'>上架时间</Text>
             </View>
             <View className='vertical'>
@@ -26,7 +39,7 @@ class OutGoods extends Component{
               <Text className='grey'>{data.isVip===1?'会员用户':'普通用户'}</Text>
             </View>
             <View className='vertical'>
-              <Image src={require('../../assets/images/up@2x.png')} className='icon' />
+              <Image src={require('../../assets/images/shelves@2x.png')} className='icon' />
               <Text className='grey'>自动上架</Text>
             </View>
           </View>

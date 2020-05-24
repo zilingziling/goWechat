@@ -1,0 +1,97 @@
+.goodsDetail {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  .goods {
+    height: 208px;
+    background: #FFFFFF;
+    display: flex;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding: 32px 12px;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+
+    .gImg {
+      width: 216px;
+      height: 144px;
+      margin-right: 16px;
+    }
+
+    .goodsInfo {
+      width: 494px;
+      display: flex;
+      flex-direction: column;
+      .flex{
+        display: flex;
+        .gNum {
+          color: rgba(0, 0, 0, .94);
+          font-size: 24px;
+          margin-right: 16px;
+        }
+        .copy{
+          width: 32px;
+          height: 32px;
+        }
+      }
+      .gName {
+        color: rgba(0, 0, 0, .95);
+        font-size: 32px;
+        margin-bottom: 22px;
+      }
+
+
+    }
+
+  }
+  .hr{
+    height: 2px;
+    background: rgba(0,0,0,.2);
+    width: 686px;
+    margin:0 auto 32px;
+  }
+  .sizes{
+    box-sizing: border-box;
+    padding: 0 32px;
+    .h2{
+      font-size: 24px;
+      text-align: left;
+      color: #000000;
+      display: block;
+      margin-bottom: 24px;
+      font-family: PingFang SC;
+    }
+    .sizeWrapper{
+      display: grid;
+      grid-template-columns: repeat(5,108px);
+      grid-column-gap: 36px;
+    }
+    .note{
+      margin-top: 4px;
+      border-radius: 8px;
+      background: #F6F5FA;
+      height: 66px;
+      line-height: 66px;
+      text-align: center;
+      font-family: PingFang SC;
+      font-size: 24px;
+      color: rgba(0,0,0,.85);
+    }
+  }
+  .check{
+    border-radius: 8px;
+    background: #FECE35;
+    box-shadow: 0 10px 20px 0 #FECE35;
+    text-align: center;
+    width: 324px;
+    height: 88px;
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    font-size: 32px;
+    font-weight: 400;
+    color: rgba(0,0,0,.84);
+    line-height: 88px;
+  }
+}

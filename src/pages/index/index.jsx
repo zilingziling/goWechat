@@ -1,5 +1,5 @@
 import Taro, { Component } from "@tarojs/taro";
-import { View, Button, Text,Image,Input  } from "@tarojs/components";
+import { View, Button, Text,Image,Input ,ScrollView } from "@tarojs/components";
 import { AtMessage,AtInput} from "taro-ui";
 import "./index.scss";
 import api from "../../service/api";
@@ -14,7 +14,8 @@ class Index extends Component {
     type:1,
     pageIndex:1,
     countInfo:{},
-
+    totalPages:'',
+    shoeNum:'' , // 搜索字段
   };
   componentDidMount() {
     this.init()
@@ -28,31 +29,42 @@ class Index extends Component {
     })
   }
    init=()=>{
-    const {type,pageIndex}=this.state
-    api.get('/v2/h5/supplyDemandHall',{pageIndex,pageSize:10,type}).then(r=>{
+    const {type,pageIndex,shoeNum}=this.state
+    api.get('/v2/h5/supplyDemandHall',{pageIndex,pageSize:10,type,shoeNum}).then(r=>{
       if(r.data.code===0){
         this.setState({
-          data:[...this.state.data,...r.data.data.list]
+          data:[...this.state.data,...r.data.data.list],
+          totalPages:r.data.data.totalPages
         })
       }
     })
   }
-  chooseType=type=>{
+  chooseType=(type,isSearch)=>{
     this.setState({
       type,
       pageIndex:1,
       data:[]
     },()=>{
-      this.init()
-
+      if(!isSearch){
+        this.init()
+      }
     })
-
   }
   onReachBottom(){
+    this.loadMore()
+  }
+  loadMore=()=>{
     this.setState({
-        pageIndex:++this.state.pageIndex
+      pageIndex:++this.state.pageIndex
     },()=>{
-      this.init()
+      if(this.state.pageIndex>this.state.totalPages){
+        wx.showToast({
+          title: '已达底部！',
+          icon:'none'
+        })
+      }else {
+        this.init()
+      }
     })
   }
   // 搜索
@@ -61,7 +73,8 @@ class Index extends Component {
       showSearch:true,
       data:[],
       pageIndex:1,
-      type:0
+      type:0,
+      shoeNum:''
     })
   }
   onCloseSearch=()=>{
@@ -69,10 +82,21 @@ class Index extends Component {
       showSearch:false,
       data:[],
       pageIndex:1,
-      type:1
+      type:1,
+      shoeNum:''
+    },()=>this.init())
+  }
+  onInputSearch=value=>{
+    this.setState({
+      shoeNum:value
     })
   }
-
+  onSearch=()=>{
+        this.init()
+  }
+  scroll=()=>{
+    this.loadMore()
+  }
   render() {
     const {data,showSearch,countInfo} =this.state
     return (
@@ -83,16 +107,16 @@ class Index extends Component {
             <View className='modalContent'>
               <View className='topType'>
                 <View className='searchType'>
-                  <Text className='select selected'>求货</Text>
-                  <Text className='select'>出货</Text>
+                  <Text className={`select ${this.state.type===0?'selected':''}`} onClick={()=>this.chooseType(0,true)}>求货</Text>
+                  <Text className={`select ${this.state.type===1?'selected':''}`} onClick={()=>this.chooseType(1,true)}>出货</Text>
                 </View>
                 <Image onClick={this.onCloseSearch} className='close' src={require('../../assets/images/delete@2x.png')}/>
               </View>
               <View className='search'>
-                <Image src={require('../../assets/images/search.png')} className='searchIcon'/>
+                <Image onClick={this.onSearch} src={require('../../assets/images/search.png')} className='searchIcon'/>
                 {/*<Input placeholderClass='placeHolder' clear={true} placeholder='输入货号或名字'/>*/}
                 <AtInput
-
+                  onChange={this.onInputSearch}
                   className='input'
                   clear
                   placeholderClass='placeHolder'
@@ -100,12 +124,15 @@ class Index extends Component {
                   placeholder='输入货号或名字'
                 />
               </View>
-              <View className='listWrapper'>
+              <ScrollView
+                scrollY
+                scrollWithAnimation
+                onScrollToLower={this.scroll}
+                className='listWrapper'>
                 {
-                  data.map(goods=>{
-                  })
+                  data.map(item=><Goods goodsInfo={{...item,type:this.state.type}} key={item.id}/>)
                 }
-              </View>
+              </ScrollView>
             </View>
           </View>
         }

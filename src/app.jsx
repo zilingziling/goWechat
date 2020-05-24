@@ -20,8 +20,11 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
-      'pages/login/login',
       'pages/outList/outList',
+
+      'pages/goodsDetail/goodsDetail',
+      'pages/login/login',
+
       'pages/his/his'
     ],
     "window": {

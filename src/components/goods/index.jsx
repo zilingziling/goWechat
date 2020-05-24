@@ -9,10 +9,13 @@ class Goods extends Component{
     },
   }
   toAskList=()=>{
-    const {goodsInfo} =this.props
-    Taro.navigateTo({
-      url:`/pages/outList/outList?shoeNum=${goodsInfo.shoeNum}&&size=${goodsInfo.size}&&type=${goodsInfo.type}&&shoeName=${goodsInfo.shoeName}&&img=${goodsInfo.img}`
-    })
+    if(!this.props.fromHis){
+      const {goodsInfo} =this.props
+      Taro.navigateTo({
+        url:`/pages/goodsDetail/goodsDetail?shoeNum=${goodsInfo.shoeNum}&&size=${goodsInfo.size}&&type=${goodsInfo.type}&&shoeName=${goodsInfo.shoeName}&&img=${goodsInfo.img}`
+      })
+
+    }
   }
   render(){
     const {goodsInfo} =this.props
@@ -24,7 +27,7 @@ class Goods extends Component{
           <Text className='num'>货号：{goodsInfo.shoeNum}</Text>
           <View className='size'>
             {
-              goodsInfo&&goodsInfo.size.split(',').map(item=><SizeTag size={item}/>)
+              goodsInfo&&goodsInfo.size.split(',').map((item,index)=><SizeTag size={item} key={index}/>)
             }
           </View>
         </View>
