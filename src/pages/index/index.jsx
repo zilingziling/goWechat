@@ -39,6 +39,14 @@ class Index extends Component {
           data:[...this.state.data,...r.data.data.list],
           totalPages:r.data.data.totalPages
         })
+      }else {
+        wx.showToast({
+          title: '服务器错误！',
+          icon:'none'
+        })
+        this.setState({
+          pageIndex: this.state.pageIndex-1
+        })
       }
     })
   }
@@ -109,7 +117,7 @@ class Index extends Component {
   }
   getNumbers=(num)=>{
     if(num.length>5){
-        
+
     }else {
         return toThousands(num)
     }

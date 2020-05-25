@@ -21,33 +21,40 @@ class Login extends Component {
   getPhoneNumber=(e)=>{
     console.log(111)
     let userInfo=wx.getStorageSync('userInfo');
+    let aboutUser=wx.getStorageSync('aboutUser')
     if (e.detail.errMsg == "getPhoneNumber:ok"){
       console.log(e.detail)
+      api.post('/v2/h5/deciphering',{
+        encryptedData:e.detail.encryptedData,
+        iv: e.detail.iv,
+        sessionKey:userInfo.sessionKey
+      }).then(response=>{
+        if(response.data.code===0){
+              // 注册
+              api.post('/v2/h5/appletRegister',{
+                wxNum:this.state.wxNum,
+                phoneNum:response.data.data,
+                img:aboutUser.avatarUrl ,
+                unoinId:userInfo.unoinId,
+              }).then(r=>{
+                if(r.data.code===0){
+                  wx.showToast({
+                    title: '注册成功！'
+                  })
+                }
+                wx.setStorageSync('token', r.data.data.token);
+              //   联系
+                api.post('/v2/h5/contactHall').then(resp=>{
+                  if(resp.data.code===0){
+                    wx.showToast({
+                      title: '联系成功！'
+                    })
+                  }
+                })
+              })
+        }
+      })
     }
-
-    // wx.getUserInfo({
-    //   success: function (res) {
-    //     // that.setData({
-    //     //   nickName: res.userInfo.nickName,
-    //     //   avatarUrl: res.userInfo.avatarUrl,
-    //     // })
-    //     api.post('/v2/h5/appletRegister',{
-    //       wxNum:this.state.wxNum,
-    //       phoneNum:userInfo.phoneNum,
-    //       img:res.userInfo.avatarUrl ,
-    //       unoinId:userInfo.unoinId,
-    //     }).then(r=>{
-    //       if(r.data.code===0){
-    //         wx.showToast({
-    //           title: '注册成功！'
-    //         })
-    //       }
-    //       wx.setStorageSync('token', r.data.data.token);
-    //     })
-    //   },
-    // })
-
-
   }
   render() {
     console.log(this.state.wxNum)

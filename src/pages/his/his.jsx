@@ -43,6 +43,14 @@ class His extends Component {
           total:r.data.data.total,
           totalPages:r.data.data.totalPages
         })
+      }else {
+        wx.showToast({
+          title: '服务器错误！',
+          icon:'none'
+        })
+        this.setState({
+          pageIndex: this.state.pageIndex-1
+        })
       }
     })
   }

@@ -52,6 +52,14 @@ class OutList extends Component {
           data:[...this.state.data,...newData],
           totalPages:r.data.data.totalPages
         })
+      }else {
+        wx.showToast({
+          title: '服务器错误！',
+          icon:'none'
+        })
+        this.setState({
+          pageIndex: this.state.pageIndex-1
+        })
       }
     })
   }
@@ -65,48 +73,66 @@ class OutList extends Component {
       clickedId:wxNum
     })
   }
-  onContact=()=>{
+  getUserInfo=()=>{
     const {clickedId}=this.state
-    if(clickedId){
-      // 验证是否登录过
-      let token =wx.getStorageSync('token');
-      if(token){
-        wx.setClipboardData({
-          data: clickedId,
-          success: function (res) {
-            wx.getClipboardData({
-              success: function (res) {
-                wx.showToast({
-                  title: '已复制微信'
-                })
-              }
-            })
-          }
-        })
-      }else {
-        // token 不存在
-        wx.login({
-          success (res) {
-            if (res.code) {
-              //发起网络请求
-                api.get('/v2/h5/getInfoByPhoneNum',{code:res.code}).then(r=>{
-                  if(r.data.code===0){
-                    wx.setStorageSync('userInfo', r.data.data);
-                    Taro.navigateTo({
-                      url:'/pages/login/login'
-                    })
+    console.log(11)
+    // 查看是否授权
+    wx.getSetting({
+      success (res){
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+          wx.getUserInfo({
+            success: function(res) {
+              console.log(res.userInfo)
+              wx.setStorageSync('aboutUser', res.userInfo);
+              //   // 验证是否登录过
+                let token =wx.getStorageSync('token');
+                if(token){
+                  // 调用联系接口
+                  api.post('/v2/h5/contactHall').then(resp=>{
+                    if(resp.data.code===0){
+                      wx.showToast({
+                        title: '联系成功！'
+                      })
+                    }
+                  })
+                  wx.setClipboardData({
+                    data: clickedId,
+                    success: function (res) {
+                      wx.getClipboardData({
+                        success: function (res) {
+                          wx.showToast({
+                            title: '已复制微信'
+                          })
+                        }
+                      })
+                    }
+                  })
                 }
-              })
+                else {
+                  // token 不存在
+                  wx.login({
+                    success (res) {
+                      if (res.code) {
+                        //发起网络请求
+                          api.get('/v2/h5/getInfoByPhoneNum',{code:res.code}).then(r=>{
+                            if(r.data.code===0){
+                              wx.setStorageSync('userInfo', r.data.data);
+                              Taro.navigateTo({
+                                url:'/pages/login/login'
+                              })
+                          }
+                        })
+                      }
+                    }
+                  })
+                }
             }
-          }
-        })
+          })
+        }
       }
-    }else {
-      wx.showToast({
-        title: '请先选择！',
-        icon:'none'
-      })
-    }
+    })
+
   }
   scroll=()=>{
     this.setState({
@@ -141,10 +167,10 @@ class OutList extends Component {
           {
             data.map((item,index)=><OutGoods onClick={this.onClickSingle} data={{...item,choosedType:type}}/>)
           }
-          <View className='contact' onClick={this.onContact}>
+          <Button disabled={!this.state.clickedId} openType='getUserInfo' onGetUserInfo={this.getUserInfo} className='contact' >
             <Image className='phone' src={require('../../assets/images/smartphone@2x.png')} />
             <Text >联系求货</Text>
-          </View>
+          </Button>
         </ScrollView>
 
       </View>
