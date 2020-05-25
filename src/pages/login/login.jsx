@@ -21,30 +21,31 @@ class Login extends Component {
   getPhoneNumber=(e)=>{
     console.log(111)
     let userInfo=wx.getStorageSync('userInfo');
-    wx.getUserInfo({
-      success: function (res) {
-        // that.setData({
-        //   nickName: res.userInfo.nickName,
-        //   avatarUrl: res.userInfo.avatarUrl,
-        // })
-        api.post('/v2/h5/appletRegister',{
-          wxNum:this.state.wxNum,
-          phoneNum:userInfo.phoneNum,
-          img:res.userInfo.avatarUrl ,
-          unoinId:userInfo.unoinId,
-        }).then(r=>{
-          if(r.data.code===0){
-            wx.showToast({
-              title: '注册成功！'
-            })
-          }
-          wx.setStorageSync('token', r.data.data.token);
-        })
-      },
-    })
     if (e.detail.errMsg == "getPhoneNumber:ok"){
       console.log(e.detail)
     }
+
+    // wx.getUserInfo({
+    //   success: function (res) {
+    //     // that.setData({
+    //     //   nickName: res.userInfo.nickName,
+    //     //   avatarUrl: res.userInfo.avatarUrl,
+    //     // })
+    //     api.post('/v2/h5/appletRegister',{
+    //       wxNum:this.state.wxNum,
+    //       phoneNum:userInfo.phoneNum,
+    //       img:res.userInfo.avatarUrl ,
+    //       unoinId:userInfo.unoinId,
+    //     }).then(r=>{
+    //       if(r.data.code===0){
+    //         wx.showToast({
+    //           title: '注册成功！'
+    //         })
+    //       }
+    //       wx.setStorageSync('token', r.data.data.token);
+    //     })
+    //   },
+    // })
 
 
   }
@@ -65,7 +66,7 @@ class Login extends Component {
           />
           <Image className='ask' src={require('../../assets/images/help@2x.png')} />
         </View>
-        <Button disabled={this.state.wxNum} className='confirm' openType="getPhoneNumber" onGetPhoneNumber={this.getPhoneNumber} >
+        <Button disabled={!this.state.wxNum} className='confirm' openType="getPhoneNumber" onGetPhoneNumber={this.getPhoneNumber} >
           提交
         </Button>
       </View>

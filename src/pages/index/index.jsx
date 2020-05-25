@@ -4,6 +4,8 @@ import { AtMessage,AtInput} from "taro-ui";
 import "./index.scss";
 import api from "../../service/api";
 import Goods from '../../components/goods'
+import CountUp from 'react-countup'
+import {toThousands} from '../../utils/func'
 class Index extends Component {
   config = {
     navigationBarTitleText: "GO球鞋仓库"
@@ -18,6 +20,7 @@ class Index extends Component {
     shoeNum:'' , // 搜索字段
   };
   componentDidMount() {
+
     this.init()
   //   获取统计信息
     api.get('/v2/h5/getStatisticsCountHall').then(r=>{
@@ -59,7 +62,7 @@ class Index extends Component {
     },()=>{
       if(this.state.pageIndex>this.state.totalPages){
         wx.showToast({
-          title: '已达底部！',
+          title: '已加载全部！',
           icon:'none'
         })
       }else {
@@ -97,6 +100,20 @@ class Index extends Component {
   scroll=()=>{
     this.loadMore()
   }
+  onClear=()=>{
+    this.setState({
+      pageIndex:1,
+      data:[],
+      shoeNum:''
+    })
+  }
+  getNumbers=(num)=>{
+    if(num.length>5){
+        
+    }else {
+        return toThousands(num)
+    }
+  }
   render() {
     const {data,showSearch,countInfo} =this.state
     return (
@@ -118,11 +135,16 @@ class Index extends Component {
                 <AtInput
                   onChange={this.onInputSearch}
                   className='input'
-                  clear
+                  type='text'
                   placeholderClass='placeHolder'
                   border={false}
                   placeholder='输入货号或名字'
+                  value={this.state.shoeNum}
                 />
+                {
+                  this.state.shoeNum&&<Image onClick={this.onClear} className='clear' src={require('../../assets/images/clear.png')} />
+                }
+
               </View>
               <ScrollView
                 scrollY
@@ -146,21 +168,22 @@ class Index extends Component {
         <View className='counts'>
           <View className='aData'>
             <View className='total'>
-              <Text className='bold'>{countInfo.totalCount}</Text>
+              <Text className='bold'>{countInfo.totalCount&&toThousands(countInfo.totalCount)}</Text>
+              {/*<CountUp end={countInfo.totalCount} />*/}
               <Text className='normal'>件</Text>
             </View>
             <Text className='explain'>累计交易次数达到</Text>
           </View>
           <View className='aData'>
             <View className='total'>
-              <Text className='bold'>{countInfo.myDemandNum}</Text>
+              <Text className='bold'>{countInfo.myDemandNum&&toThousands(countInfo.myDemandNum)}</Text>
               <Text className='normal'>件</Text>
             </View>
             <Text className='explain'>求货总数</Text>
           </View>
           <View className='aData'>
             <View className='total'>
-              <Text className='bold'>{countInfo.mySupplyNum}</Text>
+              <Text className='bold'>{countInfo.mySupplyNum&&toThousands(countInfo.mySupplyNum)}</Text>
               <Text className='normal'>件</Text>
             </View>
             <Text className='explain'>出货总数</Text>
