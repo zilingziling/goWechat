@@ -44,6 +44,11 @@ class GoodsDetail extends Component {
           this.setState({
           sizeData:newData
         })
+      }else {
+        wx.showToast({
+          title: '服务器错误！',
+          icon:'none'
+        })
       }
     })
   }

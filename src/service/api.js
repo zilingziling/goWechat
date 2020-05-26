@@ -6,7 +6,7 @@ let token='token'
 export default {
   baseOptions(params, method = "GET") {
     let { url, data } = params;
-    let contentType = "application/x-www-form-urlencoded";
+    let contentType = "application/json";
     contentType = params.contentType || contentType;
     token=wx.getStorageSync('token')||''
     const option = {

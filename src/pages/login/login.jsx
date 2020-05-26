@@ -24,18 +24,19 @@ class Login extends Component {
     let aboutUser=wx.getStorageSync('aboutUser')
     if (e.detail.errMsg == "getPhoneNumber:ok"){
       console.log(e.detail)
-      api.post('/v2/h5/deciphering',{
+      api.get('/v2/h5/deciphering',{
         encryptedData:e.detail.encryptedData,
         iv: e.detail.iv,
         sessionKey:userInfo.sessionKey
       }).then(response=>{
         if(response.data.code===0){
+          console.log(response.data.data.phoneNumber,userInfo.unoinId)
               // 注册
-              api.post('/v2/h5/appletRegister',{
+              api.get('/v2/h5/appletRegister',{
                 wxNum:this.state.wxNum,
                 phoneNum:response.data.data,
                 img:aboutUser.avatarUrl ,
-                unoinId:userInfo.unoinId,
+                unoinId:userInfo.unionid,
               }).then(r=>{
                 if(r.data.code===0){
                   wx.showToast({
@@ -43,21 +44,15 @@ class Login extends Component {
                   })
                 }
                 wx.setStorageSync('token', r.data.data.token);
-              //   联系
-                api.post('/v2/h5/contactHall').then(resp=>{
-                  if(resp.data.code===0){
-                    wx.showToast({
-                      title: '联系成功！'
-                    })
-                  }
-                })
+                Taro.navigateBack({
+                  delta: 1 // 返回上一级页面。
+                });
               })
         }
       })
     }
   }
   render() {
-    console.log(this.state.wxNum)
     return (
       <View className='loginWrap' >
         <Text className='h1'>补充信息</Text>

@@ -89,11 +89,11 @@ class OutList extends Component {
                 let token =wx.getStorageSync('token');
                 if(token){
                   // 调用联系接口
-                  api.post('/v2/h5/contactHall').then(resp=>{
+                  api.get('/v2/h5/contactHall').then(resp=>{
                     if(resp.data.code===0){
-                      wx.showToast({
-                        title: '联系成功！'
-                      })
+                      // wx.showToast({
+                      //   title: '联系成功！'
+                      // })
                     }
                   })
                   wx.setClipboardData({

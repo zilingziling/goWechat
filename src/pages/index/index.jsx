@@ -6,6 +6,7 @@ import api from "../../service/api";
 import Goods from '../../components/goods'
 import CountUp from 'react-countup'
 import {toThousands} from '../../utils/func'
+let startNum=0
 class Index extends Component {
   config = {
     navigationBarTitleText: "GO球鞋仓库"
@@ -18,15 +19,62 @@ class Index extends Component {
     countInfo:{},
     totalPages:'',
     shoeNum:'' , // 搜索字段
+    startNum:0,
+    totalCount:'',
+    myDemandNum:'',
+    mySupplyNum:'',
   };
+  timedCount=(totalNum,paramName)=>{
+    let count = Math.round(totalNum/97);
+    startNum = startNum+count;
+    this.setState({
+      paramName:startNum
+    })
+    // $("#startNum").text(startNum);
+    // 设置条件使停止计时
+    if (startNum<totalNum) {
+      console.log(11)
+      setInterval(()=>this.timedCount(startNum),10);
+    }else{
+      this.setState({
+        countInfo:{
+          ...this.state.countInfo,
+          paramName:totalNum
+        }
+      })
+    }
+  }
+  componentWillUnMount(){
+    if(this.timedCount){
+      clearInterval(this.timedCount)
+    }
+  }
   componentDidMount() {
-
     this.init()
   //   获取统计信息
     api.get('/v2/h5/getStatisticsCountHall').then(r=>{
       if(r.data.code===0){
         this.setState({
-          countInfo: r.data.data
+          totalCount:r.data.data.totalCount,
+          myDemandNum:r.data.data.myDemandNum,
+          mySupplyNum:r.data.data.mySupplyNum,
+        },()=>{
+          // this.timedCount(this.state.countInfo.totalCount,'totalCount')
+          let {totalCount,myDemandNum,mySupplyNum} =this.state
+          let b=totalCount
+          let a=0
+            // setInterval(()=>{
+            //   if(a<totalCount/1000){
+            //     this.setState({
+            //       totalCount:a++
+            //     })
+            //   }else {
+            //     this.setState({
+            //       totalCount:b
+            //     })
+            //     clearInterval()
+            //   }
+            // },1)
         })
       }
     })
@@ -117,13 +165,14 @@ class Index extends Component {
   }
   getNumbers=(num)=>{
     if(num.length>5){
-
+      let a=num.slice(0,5)
+        return toThousands(a)+'...'
     }else {
         return toThousands(num)
     }
   }
   render() {
-    const {data,showSearch,countInfo} =this.state
+    const {data,showSearch,totalCount,myDemandNum,mySupplyNum} =this.state
     return (
       <View  className="indexContent" style={showSearch?{height:'100vh',overflow:'hidden'}:null}>
         <AtMessage />
@@ -176,7 +225,7 @@ class Index extends Component {
         <View className='counts'>
           <View className='aData'>
             <View className='total'>
-              <Text className='bold'>{countInfo.totalCount&&toThousands(countInfo.totalCount)}</Text>
+              <Text className='bold'>{totalCount&&this.getNumbers(totalCount)}</Text>
               {/*<CountUp end={countInfo.totalCount} />*/}
               <Text className='normal'>件</Text>
             </View>
@@ -184,14 +233,14 @@ class Index extends Component {
           </View>
           <View className='aData'>
             <View className='total'>
-              <Text className='bold'>{countInfo.myDemandNum&&toThousands(countInfo.myDemandNum)}</Text>
+              <Text className='bold'>{myDemandNum&&this.getNumbers(myDemandNum)}</Text>
               <Text className='normal'>件</Text>
             </View>
             <Text className='explain'>求货总数</Text>
           </View>
           <View className='aData'>
             <View className='total'>
-              <Text className='bold'>{countInfo.mySupplyNum&&toThousands(countInfo.mySupplyNum)}</Text>
+              <Text className='bold'>{mySupplyNum&&this.getNumbers(mySupplyNum)}</Text>
               <Text className='normal'>件</Text>
             </View>
             <Text className='explain'>出货总数</Text>
