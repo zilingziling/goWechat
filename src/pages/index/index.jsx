@@ -9,7 +9,12 @@ import {toThousands} from '../../utils/func'
 let startNum=0
 class Index extends Component {
   config = {
-    navigationBarTitleText: "GO球鞋仓库"
+    navigationBarTitleText: "GO球鞋仓库",
+    "window": {
+      "enablePullDownRefresh": true,
+      "onReachBottomDistance": 50,
+      "backgroundTextStyle": "dark"
+    },
   };
   state = {
     data:[],
@@ -24,25 +29,42 @@ class Index extends Component {
     myDemandNum:'',
     mySupplyNum:'',
   };
-  timedCount=(totalNum,paramName)=>{
-    let count = Math.round(totalNum/97);
-    startNum = startNum+count;
+  // 下拉刷新
+  onPullDownRefresh(){
+    // Taro.startPullDownRefresh()
     this.setState({
-      paramName:startNum
-    })
-    // $("#startNum").text(startNum);
-    // 设置条件使停止计时
-    if (startNum<totalNum) {
-      console.log(11)
-      setInterval(()=>this.timedCount(startNum),10);
-    }else{
-      this.setState({
-        countInfo:{
-          ...this.state.countInfo,
-          paramName:totalNum
+      data:[],
+      pageIndex:1,
+    },()=>{
+      this.init()
+      api.get('/v2/h5/getStatisticsCountHall').then(r=>{
+        if(r.data.code===0){
+          this.setState({
+            totalCount:r.data.data.totalCount,
+            myDemandNum:r.data.data.myDemandNum,
+            mySupplyNum:r.data.data.mySupplyNum,
+          },()=>{
+            // this.timedCount(this.state.countInfo.totalCount,'totalCount')
+            // let {totalCount,myDemandNum,mySupplyNum} =this.state
+            // let b=totalCount
+            // let a=0
+            // setInterval(()=>{
+            //   if(a<totalCount/1000){
+            //     this.setState({
+            //       totalCount:a++
+            //     })
+            //   }else {
+            //     this.setState({
+            //       totalCount:b
+            //     })
+            //     clearInterval()
+            //   }
+            // },1)
+          })
         }
       })
-    }
+    })
+    
   }
   componentWillUnMount(){
     if(this.timedCount){
@@ -80,9 +102,14 @@ class Index extends Component {
     })
   }
    init=()=>{
+     wx.showLoading({
+       title: '加载中',
+     })
     const {type,pageIndex,shoeNum}=this.state
     api.get('/v2/h5/supplyDemandHall',{pageIndex,pageSize:10,type,shoeNum}).then(r=>{
       if(r.data.code===0){
+        wx.hideLoading()
+        Taro.stopPullDownRefresh()
         this.setState({
           data:[...this.state.data,...r.data.data.list],
           totalPages:r.data.data.totalPages

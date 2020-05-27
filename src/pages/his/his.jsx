@@ -5,7 +5,7 @@ import Goods from '../../components/goods'
 import api from '../../service/api'
 class His extends Component {
   config = {
-    navigationBarTitleText: "TA的求货"
+    navigationBarTitleText: "TA的求货",
   };
   state = {
     data:[],
@@ -19,6 +19,9 @@ class His extends Component {
     totalPages:'',
     accountState:''
   };
+  onPullDownRefresh(){
+    Taro.stopPullDownRefresh()
+  }
   componentDidMount() {
     let type=this.$router.params.type
     let userId=this.$router.params.userId
@@ -69,6 +72,7 @@ class His extends Component {
 
     })
   }
+
   render() {
   const {total,type,img,userName,data,accountState}=this.state
     return (

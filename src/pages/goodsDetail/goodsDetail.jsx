@@ -89,6 +89,9 @@ class GoodsDetail extends Component {
       }
     })
   }
+  onPullDownRefresh(){
+    Taro.stopPullDownRefresh()
+  }
   render() {
     const {sizeData,shoeNum,
       size,

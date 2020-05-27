@@ -41,6 +41,9 @@ class OutList extends Component {
     },()=>this.init())
 
   }
+  onPullDownRefresh(){
+    Taro.stopPullDownRefresh()
+  }
   init=()=>{
     const {shoeNum,size,type,pageSize,pageIndex}=this.state
     api.get('/v2/h5/matchUserHallList',{shoeNum,size,type,pageSize,pageIndex}).then(r=>{
@@ -90,7 +93,7 @@ class OutList extends Component {
                 let userInfo =wx.getStorageSync('userInfo');
                 if(token){
                   // 调用联系接口
-                  api.get('/v2/h5/contactHall',{
+                  api.post('/v2/h5/contactHall',{
                     createTime:contactParams.createTime,
                     matchUserId:contactParams.userId,
                     shoeNum:contactParams.shoeNum,
@@ -128,7 +131,7 @@ class OutList extends Component {
                               wx.setStorageSync('userInfo', r.data.data);
                               if(r.data.data.token){
                                 wx.setStorageSync('token',r.data.data.token)
-                                api.get('/v2/h5/contactHall',{
+                                api.post('/v2/h5/contactHall',{
                                   createTime:contactParams.createTime,
                                     matchUserId:contactParams.userId,
                                   shoeNum:contactParams.shoeNum,

@@ -31,7 +31,10 @@ class App extends Component {
       "backgroundTextStyle": "light",
       "navigationBarBackgroundColor": "#fff",
       "navigationBarTitleText": "GO球鞋仓库",
-      "navigationBarTextStyle": "black"
+      "navigationBarTextStyle": "black",
+      "enablePullDownRefresh": true,
+      "onReachBottomDistance": 50,
+      "backgroundTextStyle": "dark"
     },
     "networkTimeout": {
       "request": 15000,

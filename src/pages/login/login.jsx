@@ -13,6 +13,9 @@ class Login extends Component {
   componentDidMount() {
 
   }
+  onPullDownRefresh(){
+    Taro.stopPullDownRefresh()
+  }
   setInput=v=>{
     this.setState({
       wxNum:v
