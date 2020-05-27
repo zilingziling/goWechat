@@ -60,9 +60,9 @@ class Index extends Component {
           mySupplyNum:r.data.data.mySupplyNum,
         },()=>{
           // this.timedCount(this.state.countInfo.totalCount,'totalCount')
-          let {totalCount,myDemandNum,mySupplyNum} =this.state
-          let b=totalCount
-          let a=0
+          // let {totalCount,myDemandNum,mySupplyNum} =this.state
+          // let b=totalCount
+          // let a=0
             // setInterval(()=>{
             //   if(a<totalCount/1000){
             //     this.setState({

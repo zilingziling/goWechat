@@ -42,12 +42,22 @@ class Login extends Component {
                   wx.showToast({
                     title: '注册成功！'
                   })
+                }else {
+                  wx.showToast({
+                    title: '服务器错误！',
+                    icon:'none'
+                  })
                 }
                 wx.setStorageSync('token', r.data.data.token);
                 Taro.navigateBack({
                   delta: 1 // 返回上一级页面。
                 });
               })
+        }else {
+          wx.showToast({
+            title: '服务器错误！',
+            icon:'none'
+          })
         }
       })
     }

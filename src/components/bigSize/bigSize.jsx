@@ -2,7 +2,9 @@ import Taro, { Component } from "@tarojs/taro";
 import './bigSize.scss'
 class BigSize extends Component{
   static defaultProps = {
-    size: {},
+    size: {
+      size:''
+    },
     clickedSize:''
   }
   chooseSize=(size)=>{
@@ -16,7 +18,7 @@ class BigSize extends Component{
     const {clickedSize}=this.state
     return (
       <View onClick={()=>this.chooseSize(size.size)} className={`bigSize ${size.checked?'clicked':''}`} >
-        <Text className='size'>{size.size}</Text>
+        <Text className='size' style={{fontSize:size.size.length>=3?'12px':'24px'}}>{size.size}</Text>
         {
           size.sizeCount&&<Text className='person'>{size.sizeCount}人</Text>
         }

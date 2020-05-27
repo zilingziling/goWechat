@@ -18,7 +18,8 @@ class OutList extends Component {
     pageSize:10,
     pageIndex:1,
     clickedId:'',
-    totalPages:''
+    totalPages:'',
+    contactParams:{}
   };
   componentDidMount() {
     let shoeNum=this.$router.params.shoeNum
@@ -63,19 +64,19 @@ class OutList extends Component {
       }
     })
   }
-  onClickSingle=(id,wxNum)=>{
+  onClickSingle=(dataParams)=>{
     let data=this.state.data
     data.forEach(item=> {
-      item.checked = item.userId===id?true:false;
+      item.checked = item.userId===dataParams.userId?true:false;
     })
     this.setState({
       data,
-      clickedId:wxNum
+      clickedId:dataParams.wxNum,
+      contactParams: dataParams
     })
   }
   getUserInfo=()=>{
-    const {clickedId}=this.state
-    console.log(11)
+    const {clickedId,contactParams,type}=this.state
     // 查看是否授权
     wx.getSetting({
       success (res){
@@ -83,13 +84,20 @@ class OutList extends Component {
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称
           wx.getUserInfo({
             success: function(res) {
-              console.log(res.userInfo)
               wx.setStorageSync('aboutUser', res.userInfo);
               //   // 验证是否登录过
                 let token =wx.getStorageSync('token');
+                let userInfo =wx.getStorageSync('userInfo');
                 if(token){
                   // 调用联系接口
-                  api.get('/v2/h5/contactHall').then(resp=>{
+                  api.get('/v2/h5/contactHall',{
+                    createTime:contactParams.createTime,
+                    matchUserId:contactParams.userId,
+                    shoeNum:contactParams.shoeNum,
+                    size:contactParams.size,
+                    type,
+                    userId:userInfo.id
+                  }).then(resp=>{
                     if(resp.data.code===0){
                       // wx.showToast({
                       //   title: '联系成功！'
@@ -118,9 +126,39 @@ class OutList extends Component {
                           api.get('/v2/h5/getInfoByPhoneNum',{code:res.code}).then(r=>{
                             if(r.data.code===0){
                               wx.setStorageSync('userInfo', r.data.data);
-                              Taro.navigateTo({
-                                url:'/pages/login/login'
-                              })
+                              if(r.data.data.token){
+                                wx.setStorageSync('token',r.data.data.token)
+                                api.get('/v2/h5/contactHall',{
+                                  createTime:contactParams.createTime,
+                                    matchUserId:contactParams.userId,
+                                  shoeNum:contactParams.shoeNum,
+                                  size:contactParams.size,
+                                  type,
+                                  userId:userInfo.id
+                                }).then(resp=>{
+                                  if(resp.data.code===0){
+                                    // wx.showToast({
+                                    //   title: '联系成功！'
+                                    // })
+                                  }
+                                })
+                                wx.setClipboardData({
+                                  data: clickedId,
+                                  success: function (res) {
+                                    wx.getClipboardData({
+                                      success: function (res) {
+                                        wx.showToast({
+                                          title: '已复制微信'
+                                        })
+                                      }
+                                    })
+                                  }
+                                })
+                              }else {
+                                Taro.navigateTo({
+                                  url:'/pages/login/login'
+                                })
+                              }
                           }
                         })
                       }

@@ -1,4 +1,4 @@
 
 // http://zhshoe.free.idcfengye.com
-export const base ='http://zhshoe.free.idcfengye.com/api'
+export const base ='https://shoe.styleking.cn/api'
 // http://132.232.59.234:8111/api

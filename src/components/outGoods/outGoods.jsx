@@ -19,7 +19,7 @@ class OutGoods extends Component{
   render(){
     const {data}=this.props
     return (
-      <View className={`outGoods ${data.checked?'clicked':''}`} onClick={()=>this.props.onClick(data.userId,data.wxNum)}>
+      <View className={`outGoods ${data.checked?'clicked':''}`} onClick={()=>this.props.onClick(data)}>
         <View className='normal'>
           <Image className='head' src={data.userImg} onClick={this.toHis}/>
           {
