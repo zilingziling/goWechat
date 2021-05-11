@@ -5839,9 +5839,9 @@ homedir-polyfill@^1.0.1:
     parse-passwd "^1.0.0"
 
 hosted-git-info@^2.1.4:
-  version "2.8.8"
-  resolved "https://registry.npm.taobao.org/hosted-git-info/download/hosted-git-info-2.8.8.tgz?cache=0&sync_timestamp=1583018405733&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fhosted-git-info%2Fdownload%2Fhosted-git-info-2.8.8.tgz#7539bd4bc1e0e0a895815a2e0262420b12858488"
-  integrity sha1-dTm9S8Hg4KiVgVouAmJCCxKFhIg=
+  version "2.8.9"
+  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.9.tgz#dffc0bf9a21c02209090f2aa69429e1414daf3f9"
+  integrity sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==
 
 hpack.js@^2.1.6:
   version "2.1.6"
@@ -10980,6 +10980,11 @@ tar@^2.0.0:
     block-stream "*"
     fstream "^1.0.12"
     inherits "2"
+
+taro-cropper@^1.1.0:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/taro-cropper/-/taro-cropper-1.2.4.tgz#3146d32eb7d78bb5dcb2f0bffa9d4529c52888b2"
+  integrity sha512-Jdf6+AquRLCj6pqlafSl6+LQV5EAaDNVRmzyb7F71EKXNSeJojJtStWCGMRfi9WTCQ4esnSmZI7si7qqfn+04A==
 
 taro-css-to-react-native@2.0.7:
   version "2.0.7"
